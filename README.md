@@ -13,5 +13,5 @@ Welcome to the installation of your shadow box
 ### Apps
 
 ```
-choco install git.install nodejs.install steam origin windirstat firefox bleachbit
+choco install git.install nodejs.install steam origin windirstat firefox bleachbit geforce-experience
 ```
