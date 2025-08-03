@@ -22,17 +22,3 @@ Run this command in an elevated PowerShell window:
 ```powershell
 choco install git.install nodejs.install steam origin epicgameslauncher windirstat firefox bleachbit geforce-experience
 ```
-
-## Included Applications
-
-| Application | Purpose |
-|-------------|---------|
-| Git | Version control |
-| Node.js | JavaScript runtime |
-| Steam | Gaming platform |
-| Origin | EA gaming platform |
-| Epic Games Launcher | Epic Games platform |
-| WinDirStat | Disk usage analyzer |
-| Firefox | Web browser |
-| BleachBit | System cleaner |
-| GeForce Experience | NVIDIA GPU management |
