@@ -1,17 +1,38 @@
-# Shadow Box
+# Shadow Box Bootstrap
 
-Welcome to the installation of your shadow box
+Automated setup for your Windows shadow box environment.
 
-## Installation
+## Prerequisites
 
-### Choco
+- Windows 10/11
+- Administrator privileges
 
-```
+## Quick Start
+
+### 1. Install Chocolatey Package Manager
+
+Run this command in an elevated PowerShell window:
+
+```powershell
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 ```
 
-### Apps
+### 2. Install Essential Applications
 
+```powershell
+choco install git.install nodejs.install steam origin epicgameslauncher windirstat firefox bleachbit geforce-experience
 ```
-choco install git.install nodejs.install steam origin windirstat firefox bleachbit geforce-experience
-```
+
+## Included Applications
+
+| Application | Purpose |
+|-------------|---------|
+| Git | Version control |
+| Node.js | JavaScript runtime |
+| Steam | Gaming platform |
+| Origin | EA gaming platform |
+| Epic Games Launcher | Epic Games platform |
+| WinDirStat | Disk usage analyzer |
+| Firefox | Web browser |
+| BleachBit | System cleaner |
+| GeForce Experience | NVIDIA GPU management |
