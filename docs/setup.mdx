@@ -1,0 +1,45 @@
+---
+title: "🪟 Setup"
+description: "The prerequisites, the two setup commands and the full list of packages they install on a Windows shadow box."
+---
+
+## Prerequisites
+
+- Windows 10 or 11
+- Administrator privileges
+
+Both steps below must run from an **elevated** prompt: right-click PowerShell and choose _Run as administrator_.
+
+## 1. Install Chocolatey
+
+[Chocolatey](https://chocolatey.org) is the package manager the rest of the setup relies on. Install it with:
+
+```powershell
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+```
+
+The command downloads and runs Chocolatey's official installer, then appends `%ALLUSERSPROFILE%\chocolatey\bin` to `PATH` so `choco` is available straight away.
+
+## 2. Install the applications
+
+With Chocolatey in place, one command installs everything:
+
+```powershell
+choco install git.install nodejs.install steam origin epicgameslauncher windirstat firefox bleachbit geforce-experience
+```
+
+## What gets installed
+
+| Chocolatey package   | Application                  |
+| -------------------- | ---------------------------- |
+| `git.install`        | Git                          |
+| `nodejs.install`     | Node.js                      |
+| `steam`              | Steam                        |
+| `origin`             | Origin                       |
+| `epicgameslauncher`  | Epic Games Launcher          |
+| `windirstat`         | WinDirStat                   |
+| `firefox`            | Firefox                      |
+| `bleachbit`          | BleachBit                    |
+| `geforce-experience` | GeForce Experience           |
+
+To leave one out, drop its package name from the `choco install` line before running it.
