@@ -1,45 +1,66 @@
 ---
 title: "🪟 Setup"
-description: "The prerequisites, the two setup commands and the full list of packages they install on a Windows shadow box."
+description: "The first run on a fresh Shadow PC, the update command, how to add a package and the opt-in Windows settings."
 ---
 
-## Prerequisites
+## First run
 
-- Windows 10 or 11
-- Administrator privileges
-
-Both steps below must run from an **elevated** prompt: right-click PowerShell and choose _Run as administrator_.
-
-## 1. Install Chocolatey
-
-[Chocolatey](https://chocolatey.org) is the package manager the rest of the setup relies on. Install it with:
+Open **PowerShell** (administrator rights are not required) and paste:
 
 ```powershell
-@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+irm https://raw.githubusercontent.com/kud/shadow-box-bootstrap/master/bootstrap.ps1 | iex
 ```
 
-The command downloads and runs Chocolatey's official installer, then appends `%ALLUSERSPROFILE%\chocolatey\bin` to `PATH` so `choco` is available straight away.
+The bootstrap makes sure `winget` is registered, installs Git and PowerShell 7, clones the repository to `%USERPROFILE%\shadow-box-bootstrap` and runs `shadow install`. Installers that need administrator rights raise their own Windows prompt.
 
-## 2. Install the applications
-
-With Chocolatey in place, one command installs everything:
+## Updating
 
 ```powershell
-choco install git.install nodejs.install steam origin epicgameslauncher windirstat firefox bleachbit geforce-experience
+~\shadow-box-bootstrap\shadow update
 ```
+
+`update` pulls the latest version of the repository, installs anything newly listed, upgrades outdated packages and applies the settings that are switched on. Game launchers are marked as self-updating, so `update` leaves them alone.
+
+| Command          | Does                                                 |
+| ---------------- | ---------------------------------------------------- |
+| `shadow install` | install everything missing, apply enabled settings    |
+| `shadow update`  | pull the repo, then install, upgrade, apply settings  |
+| `shadow status`  | show what is missing or not applied, change nothing   |
+| `shadow check`   | validate the `config/` files                          |
+
+`-DryRun` previews `install` or `update` without changing anything. Every run writes a log to `%LOCALAPPDATA%\shadow-box-bootstrap\logs`.
+
+## Adding a package
+
+Look up the winget id with `winget search <name>`, then add a line to `config/packages.psd1`:
+
+```powershell
+@{ Id = 'Discord.Discord'; Name = 'Discord'; Upgrade = $false }
+```
+
+`Upgrade = $false` marks an application that updates itself. Software that winget lacks goes under `Scoop`, which is installed the first time it is needed. Removing a line stops managing a package without uninstalling it.
 
 ## What gets installed
 
-| Chocolatey package   | Application                  |
-| -------------------- | ---------------------------- |
-| `git.install`        | Git                          |
-| `nodejs.install`     | Node.js                      |
-| `steam`              | Steam                        |
-| `origin`             | Origin                       |
-| `epicgameslauncher`  | Epic Games Launcher          |
-| `windirstat`         | WinDirStat                   |
-| `firefox`            | Firefox                      |
-| `bleachbit`          | BleachBit                    |
-| `geforce-experience` | GeForce Experience           |
+| winget id                     | Application         | Upgraded by `update` |
+| ----------------------------- | ------------------- | -------------------- |
+| `Vicinae.Vicinae`             | Vicinae (launcher)  | yes                  |
+| `Valve.Steam`                 | Steam               | self-updating        |
+| `EpicGames.EpicGamesLauncher` | Epic Games Launcher | self-updating        |
+| `ElectronicArts.EADesktop`    | EA app              | self-updating        |
+| `Mozilla.Firefox`             | Firefox             | yes                  |
+| `WinDirStat.WinDirStat`       | WinDirStat          | yes                  |
+| `BleachBit.BleachBit`         | BleachBit           | yes                  |
+| `Git.Git`                     | Git                 | yes                  |
+| `Microsoft.PowerShell`        | PowerShell 7        | yes                  |
+| `OpenJS.NodeJS.LTS`           | Node.js LTS         | yes                  |
 
-To leave one out, drop its package name from the `choco install` line before running it.
+PowerToys, GOG Galaxy, Ubisoft Connect and Discord are listed but commented out. The EA app replaces Origin, which EA has retired.
+
+## Opt-in Windows settings
+
+`config/settings.psd1` lists a few gaming-oriented tweaks: visible file extensions, dark mode, Game Mode, no Game Bar background recording and raw mouse input. **Every one ships disabled.** Setting `Enabled = $true` and running `shadow update` applies it. Tweaks write only to the current user's registry (`HKCU`) and are rewritten only when the value differs.
+
+## GPU drivers
+
+GPU drivers are left alone: the Shadow image is generally provisioned with its driver, and replacing it by hand on a cloud machine risks more than it gains. NVIDIA has replaced GeForce Experience with the NVIDIA app, which winget does not carry.
