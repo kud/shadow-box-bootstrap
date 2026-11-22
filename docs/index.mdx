@@ -1,12 +1,12 @@
 ---
 title: "👋 Introduction"
-description: "A short, repeatable recipe for setting up a fresh Windows shadow box with Chocolatey and a standard set of applications."
+description: "One command to set up a Windows Shadow PC for gaming, one command to keep it up to date, with the desired state kept in plain configuration files."
 ---
 
-**shadow-box-bootstrap** is a setup recipe for a Windows shadow box: two commands, run from an elevated prompt, that take a clean Windows 10 or 11 install to a working machine with the tools and game launchers already in place.
+**shadow-box-bootstrap** sets up a Windows [Shadow](https://shadow.tech) PC for gaming and keeps it current. One command installs everything on a fresh machine; one command updates it later. The list of applications and the optional Windows settings live in two plain files under `config/`, so changing the machine means editing a line rather than a script.
 
-There is no script to download and nothing to configure. The whole recipe lives in a single page, so it reads in a minute and repeats the same way every time.
+Every run is idempotent: it installs what is missing, upgrades what is outdated and leaves the rest alone, so it is safe to repeat at any time. Packages come from `winget`, which ships with Windows, with [Scoop](https://scoop.sh) as a fallback for anything winget does not carry.
 
 ## What's here
 
-- [🪟 Setup](/projects/shadow-box-bootstrap/docs/setup) — what you need, the two commands, and every package they install.
+- [🪟 Setup](/projects/shadow-box-bootstrap/docs/setup) — the first run, the update command, adding a package and the opt-in settings.
