@@ -46,7 +46,8 @@ shadow-box-bootstrap
 
 function Update-ShadowRepository {
     # Fast-forwards this clone; returns $true when new commits arrived.
-    if ($DryRun -or $NoPull) { return $false }
+    param([switch]$Skip)
+    if ($Skip) { return $false }
     if (-not (Test-Path (Join-Path $root '.git'))) {
         Write-ShadowSkip 'not a git clone, skipping self-update'
         return $false
@@ -83,7 +84,7 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 
 if ($Command -eq 'status') { Show-ShadowStatus -Config $config; exit 0 }
 
-if ($Command -eq 'update' -and (Update-ShadowRepository)) {
+if ($Command -eq 'update' -and (Update-ShadowRepository -Skip:($DryRun -or $NoPull))) {
     # Re-run with the freshly pulled code and config.
     $shell = (Get-Process -Id $PID).Path
     & $shell -NoProfile -ExecutionPolicy Bypass -File $PSCommandPath update -NoPull
